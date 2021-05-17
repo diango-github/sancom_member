@@ -1,0 +1,107 @@
+{% extends "sancom_free/common.html" %}
+{% load static %}
+
+{% block body %}
+    <form name="shadow" method="post">
+    {% csrf_token %}
+    <h5 class="" id="sentence2" >{{chinese|safe}}</h5>
+    <br>
+    <h5 class="">音声分割練習</h5>
+    <div class="space2">
+    <audio class="pad" id="bgm2" controls ><source src="{% static csound %}" ></audio>
+    <select class="space2" name="speed2" onchange="speedSet2()">
+        <option  value="">再生速度120%</option>
+        <option  value="">再生速度100%</option>
+        <option  value="">再生速度80%</option>
+        <option  value="">再生速度60%</option>
+    </select>
+    </div>
+    <div class="space4">
+        <label>(1) 分割を開始したい位置で再生停止⇒</label>
+        <label><button id="btn-play1" type="button">ここを押して位置読込</button> </label><br>
+        <label class="space4">開始位置<input id="start_position" type="text" size="7" name="start_position" value="{{start}}">　総長<input id="duration" type="text" size="7" name="duration" value="{{length}}"></label><br>
+        <label>(2) 分割を終了したい位置で再生停止⇒</label>
+        <label><button id="btn-play2" type="button">ここを押して位置読込</button> </label><br>
+        <label class="space4">終了位置<input id="end_position" type="text" size="7" name="end_position" value="{{end}}"></label>
+        <br>
+        <label>(3) <input type="submit" value="分割ファイル作成" name="split" class="btn btn-primary my-2"> </label><br>
+        <div class="">
+            <p>{{finish_comment}}</p>  
+            <audio id="bgm3" ><source src="{% static sound_splited %}" ></audio>
+            <button class="space1" id="btn-play3" type="button">再生</button>
+            <select class="space1" name="speed3" onchange="speedSet3()">
+                <option  value="">再生速度120%</option>
+                <option  value="">再生速度100%</option>
+                <option  value="">再生速度80%</option>
+                <option  value="">再生速度60%</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <a class="btn btn-outline-primary btn-sm mr-2" href="{% url 'cshadow' %}?item={{item}}&category={{category}}&japanese={{japanese}}&english={{english}}&esound={{esound}}&chinese={{chinese}}&csound={{csound}}">元に戻る</a>
+    </form>
+        
+    <script>
+        var bgm2 = document.querySelector("#bgm2");       // 音声分割位置指示用  
+        var bgm3 = document.querySelector("#bgm3");       // 分割ファイル再生用
+        const btn1  = document.querySelector("#btn-play1");   // 音声分割位置指示用
+        const btn2  = document.querySelector("#btn-play2");   // 音声分割位置指示用
+        const btn3  = document.querySelector("#btn-play3");   // 分割ファイル再生用
+        const duration = document.querySelector("#duration"); //音声分割開始位置<imput>
+        const start = document.querySelector("#start_position"); //ファイル総長<imput>
+        const end = document.querySelector("#end_position"); //音声分割終了位置<imput> 
+
+        let letters2 = document.getElementById('sentence2');
+        letters2.style.color = '#BB00FF';
+
+        function speedSet2(){
+            for ( i=0; i<4; i++ ){
+              switch (document.shadow.speed2.selectedIndex){
+                case 0: bgm2.playbackRate=1.2;break;
+                case 1: bgm2.playbackRate=1.0;break;
+                case 2: bgm2.playbackRate=0.8;break;
+                case 3: bgm2.playbackRate=0.6;break;
+              }
+            }
+        }
+
+        function speedSet3(){
+            for ( i=0; i<4; i++ ){
+              switch (document.shadow.speed3.selectedIndex){
+                case 0: bgm3.playbackRate=1.2;break;
+                case 1: bgm3.playbackRate=1.0;break;
+                case 2: bgm3.playbackRate=0.8;break;
+                case 3: bgm3.playbackRate=0.6;break;
+              }
+            }
+        }
+
+        btn3.addEventListener("click", ()=>{
+            bgm3.play();
+        });
+
+        btn1.addEventListener("click", ()=>{
+            if( bgm2.paused ){
+                bgm2.pause();
+                document.getElementById( "duration" ).value = bgm2.duration ;
+                document.getElementById( "start_position" ).value = bgm2.currentTime ;
+                console.log( bgm2.currentTime);
+            }
+            else{
+                bgm2.pause();
+            }
+        });
+
+        btn2.addEventListener("click", ()=>{
+            if( bgm2.paused ){
+                bgm2.pause();
+                document.getElementById( "end_position" ).value = bgm2.currentTime ;
+                console.log( bgm2.currentTime);
+            }
+            else{
+                bgm2.pause();
+            }
+        });
+    </script>
+
+{% endblock body %}
