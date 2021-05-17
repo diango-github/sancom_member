@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+        <p>こんにちは　{{visiter}} さん</p>
+        <br>
+        <h4>フリーコンテンツ</h4>
+        <ul>
+            <li class="h5 mb-3"><a href="{% url 'index' %}">日英中ビジネス文例(基本文例暗唱型)</a></li>
+            <li class="h5 mb-3"><a href="{% url 'publiccontents' %}">一般公開コンテンツ(シャドーイング訓練型)</a></li>
+        </ul>
+        <h4>有料コンテンツ</h4>
+        <ul>
+            <li class="h5 mb-3">準備中</li>
+        </ul>
+        <h4>オンライン発音コーチング</h4>
+        <ul>
+            <li class="h5 mb-3">準備中</li>
+        </ul>
+        <h4>SANCOM専用SNS</h4>
+        <ul>
+            <li class="h5 mb-3">準備中</li>
+        </ul>
+    {% else %}
+    <h4>フリーコンテンツ</h4>
+    <ul>
+        <li class="h5 mb-3">日英中ビジネス文例(基本文例暗唱型)</li>
+        <li class="h5 mb-3">一般公開コンテンツ(シャドーイング訓練型)</li>
+    </ul>
+    <h4>有料コンテンツ</h4>
+    <ul>
+        <li class="h5 mb-3">準備中</li>
+    </ul>
+    <h4>オンライン発音コーチング</h4>
+    <ul>
+        <li class="h5 mb-3">準備中</li>
+    </ul>
+    <h4>SANCOM専用SNS</h4>
+    <ul>
+        <li class="h5 mb-3">準備中</li>
+    </ul>
+    <h4>※ご入会(無料)によりフリーコンテンツをご利用いただけます。パスワード再発行時の認証のためIDとしてEメールアドレスが必要になります。</h4>
+    {% endif %}
+
+{% endblock %}
